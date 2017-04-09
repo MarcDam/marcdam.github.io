@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Cyclic Competition</title>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link href='css/main.css' rel='stylesheet' type='text/css'>
+  </head>
+  <body>
+    <h1>Cyclic Competition</h1>
+    <div class="canvas">
+      <canvas id="mainCanvas" width="600" height="600"> </canvas>
+    </div>
+    <div class="controls">
+      <div id="interactionsTable">
+      <!-- Container for the interactions table -->
+      </div>
+      <div id="buttons">
+        <input type="button" id="interactionsButton" value="Set interactions">
+        <input type="button" id="canvasResetButton" value="Reset">
+        <input type="button" id="stopButton" value="Pause simulation">
+        <input type="button" id="startButton" value="Start simulation">
+        <br> Add or remove species:
+        <input type="button" id="addSpeciesButton" value="+">
+        <input type="button" id="removeSpeciesButton" value="-">
+        (resets simulation)
+        <br> Select interaction type:
+        <select id="interactionsList"> </select>
+        <br> Select initial conditions:
+        <select id="initialConditionsList"> </select> (reset to apply)
+        <br> Zoom/scale canvas:
+        <input type="range" min="1" max="20" step="1" id="scaleSlider">
+        <br> Number of cells:
+        <input type="range" min="10" max="200" step="10" id="cellSlider"> (changing resets simulation)
+        <br> Speed:
+        <input type="range" min="1" max="10" step="1" id="speedSlider">
+      </div>
+    </div>
+    <script src="scripts/cyclicCompetition.js"></script>
+  </body>
+</html>

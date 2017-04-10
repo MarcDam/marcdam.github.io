@@ -10,7 +10,7 @@
 var canvas = document.getElementById("mainCanvas");
 var ctx = canvas.getContext("2d");
 
-var scale = 10; // scale hould divide width and height of canvas
+var scale = 5; // scale hould divide width and height of canvas
 document.getElementById("scaleSlider").value = scale;
 var n = 3 // Number of colors
 // Field dimensions
@@ -288,6 +288,7 @@ document.getElementById("canvasResetButton").onclick = function() {
 }
 
 neighbors = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+document.getElementById("neighborList").value = "4"
 
 // "Game loop"
 ups = 100 // "updates" per second
@@ -414,5 +415,14 @@ document.getElementById("cellSlider").onchange = function() {
   // If the simulation was running before we started redrawing we start it again
   if (simulationRunning) {
     intervalId = setInterval(run, 1000/ups);
+  }
+}
+
+// Neighbor list
+document.getElementById("neighborList").onchange = function() {
+  if (this.value == "4") {
+    neighbors = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+  } else {
+    neighbors = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [1, -1], [-1, 1], [-1, -1]];
   }
 }

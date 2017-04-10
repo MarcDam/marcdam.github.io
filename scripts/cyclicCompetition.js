@@ -476,8 +476,13 @@ document.getElementById("cellSlider").onchange = function() {
     clearInterval(intervalId);
   }
   
+  // Generate and draw the new field
   field = resetCanvas[selectedInitialConditions]();
   drawField();
+  
+  // Recount the cells and reset the charts
+  counts = countCells(field)
+  resetChart();
   
   // If the simulation was running before we started redrawing we start it again
   if (simulationRunning) {

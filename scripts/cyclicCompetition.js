@@ -1,9 +1,7 @@
 /*
   To-do:  More initial conditions
           Defensive interactions
-          neighbor choice
           graphs (?)
-          Stats (?)
 */
 
 // Get the canvas element to draw on
@@ -16,6 +14,7 @@ var n = 3 // Number of colors
 // Field dimensions
 var xMax = canvas.width / scale;
 var yMax = canvas.height / scale;
+var nCells = xMax*yMax;
 
 // Function to generate a colormap with 'n' colors
 function colormap(n) {
@@ -38,6 +37,22 @@ function drawPoint (x, y, color) {
 // Function to generate random integers between max and min inclusive (from MDN)
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function countCells(cellArray) {
+  var totals = Array(n);
+  
+  for (i = 0; i < totals.length; i++) {
+    totals[i] = 0;
+  }
+  
+  for (i = 0; i < cellArray.length; i ++) {
+    for (j = 0; j < cellArray[i].length; j++) {
+      totals[cellArray[i][j]]++;
+    }
+  }
+  
+  return totals;
 }
 
 // Function to create the displayed interactions table
@@ -291,12 +306,13 @@ neighbors = [[1, 0], [-1, 0], [0, 1], [0, -1]];
 document.getElementById("neighborList").value = "4"
 
 // "Game loop"
-ups = 100 // "updates" per second
+ups = 50 // "updates" per second
+updates = 0;
 
 function run() {
-  // Repeat for each step on the speed slider
-  for (s = 0; s < speed; s++) {
-    
+  // Repeat twice for each step on the speed slider
+  for (s = 0; s < 2*speed; s++) {
+    updates++;
     // Pick a random point
     x = getRandomInt(0, xMax - 1);
     y = getRandomInt(0, yMax - 1);
@@ -307,13 +323,61 @@ function run() {
       
       // Check if interaction leads to a change and update field and canvas if so
       if (field[xn][yn] != interactions[field[x][y]][field[xn][yn]]) {
+        counts[field[xn][yn]]--; // Count the disappearing species down
+        counts[interactions[field[x][y]][field[xn][yn]]]++; // Count the overtaking species up
         field[xn][yn] = interactions[field[x][y]][field[xn][yn]];
         drawPoint(xn, yn, cmap[field[xn][yn]]);
       }
     }
   }
+  
+  var tmp = [updates];
+  for (i = 0; i < n; i ++) {
+    tmp.push(counts[i]/nCells);
+  }
+  
+  data.push(tmp);
+  if (data.length > 500) {
+    data.shift();
+  }
+  popChart.updateOptions({'file': data});
 }
 
+// Function to reset the chart
+function resetChart() {
+  updates = 0;
+  data = [];
+  var tmp = [0];
+  labels = ["Steps"];
+  for (i = 0; i < n; i ++) {
+    tmp.push(counts[i]/nCells);
+    labels.push(i.toString());
+  }
+  
+  data.push(tmp);
+  
+  // If a graph already exists, then destroy it
+  if (popChart) {
+    popChart.destroy();
+  }
+  
+  // Create the new graph
+  popChart = new Dygraph(document.getElementById("populationChart"), data, {
+    drawPoints: true,
+    valueRange: [0, 1], // Set y-axis
+    colors: cmap,
+    labels: labels});
+}
+
+// Setup the relevant chart variable and plot initial population on it
+var data;
+var popChart;
+
+var counts = countCells(field);
+
+resetChart();
+
+// Start the simulation
 intervalId = setInterval(run, 1000/ups);
 simulationRunning = true;
 
@@ -327,6 +391,8 @@ function resetPage () {
   populateHTMLTable();
   field = resetCanvas[selectedInitialConditions]();
   drawField();
+  counts = countCells(field)
+  resetChart();
   intervalId = setInterval(run, 1000/ups);
   simulationRunning = true;
 }
@@ -401,6 +467,7 @@ document.getElementById("cellSlider").value = xMax;
 
 document.getElementById("cellSlider").onchange = function() {
   xMax = yMax = parseInt(this.value);
+  nCells = xMax*yMax;
   canvas.width = scale*xMax;
   canvas.height = scale*yMax;
   
@@ -426,3 +493,4 @@ document.getElementById("neighborList").onchange = function() {
     neighbors = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [1, -1], [-1, 1], [-1, -1]];
   }
 }
+

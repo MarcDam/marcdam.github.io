@@ -298,8 +298,13 @@ document.getElementById("interactionsButton").onclick = function() {
 
 // Button to reset canvas
 document.getElementById("canvasResetButton").onclick = function() {
+  // Generate and draw the new field
   field = resetCanvas[selectedInitialConditions]();
   drawField();
+  
+  // Recount the cells and reset the charts
+  counts = countCells(field)
+  resetChart();
 }
 
 neighbors = [[1, 0], [-1, 0], [0, 1], [0, -1]];

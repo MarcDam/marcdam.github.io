@@ -34,7 +34,7 @@ document.getElementById("canvasResetButton").onclick = function() {
 }
 
 // "Game loop"
-var ups = 50 // "updates" per second
+var ups = 10 // "updates" per second
 var updates = 0;
 
 function run() {

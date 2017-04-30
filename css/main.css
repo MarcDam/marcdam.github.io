@@ -2,6 +2,10 @@
   float: left;
 }
 
+#mainCanvas {
+  border: 1px solid black;
+}
+
 .controls {
   float: left;
 }
@@ -14,6 +18,11 @@
   float: left;
   width: 500px;
   height: 500px;
+}
+
+.explanation {
+  clear: left;
+  width: 60em;
 }
 
 nav {

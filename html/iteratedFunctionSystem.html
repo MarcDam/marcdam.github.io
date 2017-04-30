@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Iterated Function System</title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link href='css/main.css' rel='stylesheet' type='text/css'>
+  </head>
+  <body>
+    <!-- menu -->
+    <h1>Iterated Function System</h1>
+    <div class="canvas">
+      <canvas id="mainCanvas" width="800" height="800"> </canvas>
+    </div>
+    <div class="controls">
+      <div id="buttons">
+        <input type="button" id="canvasResetButton" value="Reset">
+        <input type="button" id="stopButton" value="Pause simulation">
+        <input type="button" id="startButton" value="Start simulation">
+        <br> Zoom/scale canvas:
+        <input type="range" min="1" max="20" step="1" id="scaleSlider">
+        <br> (changing scale clears any iterations)
+        <br> Speed:
+        <input type="range" min="1" max="1001" step="10" id="speedSlider">
+      </div>
+    </div>
+    <div class="explanation">
+      Draw any number of the points on the canvas. The last point clicked (marked in red) will be the starting point for the iteration. At each iteration one of the black points are selected randomly and the current point (marked in green) in the iteration is moved half way there. (Inspired by the Numberphile video <a href="https://www.youtube.com/watch?v=kbKtFN71Lfs">Chaos Game (YouTube)</a>.)
+    </div>
+    <script src="scripts/iteratedFunctionSystem.js"></script>
+  </body>
+</html>

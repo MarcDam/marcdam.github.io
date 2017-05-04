@@ -1,3 +1,7 @@
+/*
+  To-do: Color points based on trajectory
+*/
+
 // Get the canvas element to draw on
 var canvas = document.getElementById("mainCanvas");
 var ctx = canvas.getContext("2d");

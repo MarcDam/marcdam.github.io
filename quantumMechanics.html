@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Quantum Mechanics Animations</title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link href='css/main.css' rel='stylesheet' type='text/css'>
+  </head>
+  <body>
+      <nav id="mainNav">
+        <ul>
+          <li> <a href="index.html"> Home </a> </li>
+          <li> <a href="cyclicCompetition.html"> Cyclic Competition Simulation </a> </li>
+          <li> <a href="iteratedFunctionSystem.html"> Iterated Function System </a> </li>
+          <li> <a href="quantumMechanics.html"> Quantum Mechanics Animations </a> </li>
+        </ul>
+      </nav>
+
+    <div class="content">
+      <h1>Quantum Mechanics Animations</h1>
+      <div class="explanation">
+        On this page you will find animations of a Gaussian wave package in an infinite square well and in a finite square well inside an infinite square well. These animations were made as part of a project to explore quantum mechanics using simulations. A short report on the project containing some of the theory behind and discussions of the animations is available <a href="files/quantumReport.pdf">here (PDF)</a>.
+      </div>
+      <h2>A wave package in an infnite square well</h2>
+      <video src="videos/ISW_wavePackage.webm" width=800, height=600 controls=true> </video>
+      <div class="explanation">
+        In this animation we see a wave package starting out with a momentum towards the left. As time goes on we see the wave package become more spread out with a less well defined position and momentum. It is interesting to note that eventually the wave package returns to it original shape.
+        <br>
+        The arrows on the wave function plot and momementum spectrum plot indicates the expected value at the current time step. The bars around the arrows are drawn at plus/minus one standard deviation indicating how spread out the wave package is. The arrow on the uncertainty plot indicates what the current value of the uncertainty product &sigma;<sub>x</sub>&sigma;<sub>p</sub>.
+      </div>
+      <h2>A wave package in a finite square well inside an infinite square well</h2>
+      <video src="videos/WiW_wavePackage.webm" width=800, height=600 controls=true> </video>
+      <div class="explanation">
+        In this animation we again see a wave package but this time it is inside a finite square well which is inside an infinite square well. It starts outside the finite square well and then moves across it to the left. We see the wave package becoming less well defined as it passes over the finite square well.
+      </div>
+    </div>
+  </body>
+</html>

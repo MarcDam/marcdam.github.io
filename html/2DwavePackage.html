@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>A Wave Package in the Infinite Square Well</title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.12.3/math.min.js" integrity="sha256-Cwy6nM+A4EVBjE2Kq2Oh8Igiu7ZvwFqR5nEHfCaRJjY=" crossorigin="anonymous"></script>
+    <link href='css/main.css' rel='stylesheet' type='text/css'>
+  </head>
+  <body>
+    <!-- menu -->
+    <div class="content">
+      <h1>A Wave Package in the Infinite Square Well</h1>
+      <div class="canvas">
+        <canvas id="mainCanvas" width="500" height="500"> </canvas>
+      </div>
+      <div class="controls">
+        <div id="interactionsTable">
+        <!-- Container for the interactions table -->
+        </div>
+        <div id="buttons">
+          <input type="button" id="setWavePackageButton" value="Set wave package">
+          <input type="button" id="canvasResetButton" value="Reset">
+          <input type="button" id="stopButton" value="Pause simulation">
+          <input type="button" id="startButton" value="Start simulation">
+          <br> Number of cells:
+          <input type="range" min="100" max="1000" step="100" id="cellSlider"> (changing resets simulation)
+          <br> Speed:
+          <input type="range" min="1" max="1001" step="10" id="speedSlider">
+        </div>
+      </div>
+      <script src="scripts/2DwavePackage.js"></script>
+    </div>
+  </body>
+</html>

@@ -124,7 +124,7 @@ function getcn(f, x, n1, n2) {
   return cn;
 }
 
-// ### Drawing/UI/"game loop" related stuff ### \\
+// ### Drawing/UI/"draw loop" related stuff ### \\
 
 // Function to generate a colormap with 'n' colors
 function colormap(n) {
@@ -153,7 +153,7 @@ var y = linspace(0, 1, yMax);
 // Setup the wave package
 x0 = 0.5;
 y0 = 0.5
-sigma = 0.1;
+sigma = 0.01;
 k0x = 100;
 k0y = 100;
 
@@ -168,18 +168,37 @@ for (i = 0; i < xMax; i++) {
   }
 }
 
-var cn = getcn(f, x, y, 50, 50);
+var cn = getcn(fun, x, y, 50, 50);
 
-var f0 = Psi(cn, x, t, 0);
+var f0 = Psi(cn, x, y, 0);
 
-// "Game loop"
-ups = 30 // "updates" per second
+maxIntensity = math.max(math.abs(f0));
+
+// "Draw loop"
+ups = 1 // "frames" per second
+
+var t = 0;
+var deltat = 0.001;
+
+// Setup the image data
+var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+var data = imageData.data;
 
 function run() {
-  // Repeat for each step on the speed slider
-  for (s = 0; s < speed; s++) {
-    // DO ME!
+  // Get the function at the current time
+  f = Psi(cn, x, y, t);
+  
+  // Do the drawing
+  for (let i = 0; i < data.length; i += 4) {
+    let j = i/4;
+    data[i + 3] = 255*math.abs(f[(j - (j % yMax))/xMax][j % yMax])/maxIntensity;
   }
+  
+  ctx.putImageData(imageData, 0, 0);
+  
+  t += speed*deltat;
+  
+  console.log(t)
 }
 
 intervalId = setInterval(run, 1000/ups);

@@ -60,6 +60,7 @@ player1.bulletSpeedX = 0;
 player1.bulletSpeedY = 0;
 player1.bulletAngle = 0;
 player1.fired = false;
+player1.won = false;
 
 var player2 = new Object();
 player2.xPos = 80;
@@ -77,6 +78,7 @@ player2.bulletSpeedX = 0;
 player2.bulletSpeedY = 0;
 player2.bulletAngle = 0;
 player2.fired = false;
+player2.won = false;
 
 var players = [player1, player2];
 
@@ -102,6 +104,14 @@ function draw() {
         if (players[i].bullet) {
             drawPoint(players[i].bulletX, players[i].bulletY, "#000000");
         }
+    
+        // If a player has won then draw a big large piece of text saying so
+        if (players[i].won) {
+            ctx.font = "100px Open Sans";
+            ctx.fillStyle = players[i].color;
+            ctx.textAlign = "center";
+            ctx.fillText("Player " + (i+1) + " won", canvas.width/2, canvas.height/2);
+        }
     }
 }
 
@@ -119,6 +129,13 @@ function explosion(x, y) {
             }
         }
     }
+    for (let i = 0; i < players.length; i++) {
+        if ((x - players[i].xPos)*(x - players[i].xPos) + (y - players[i].yPos)*(y - players[i].yPos) <= explosionRadius*explosionRadius) {
+            clearInterval(runId);
+            console.log("Player " + i + " hit");
+            players[(i + 1) % 2].won = true;
+        }
+    }
 }
 
 function run() {
@@ -126,11 +143,24 @@ function run() {
         // Move the tanks if the keys are pressed
         if (players[i].goingLeft && players[i].xPos > 0) {
             if (!ground[players[i].xPos-1][players[i].yPos]) {
-                players[i].xPos -= 1
+                players[i].xPos -= 1;
+            } else if (!ground[players[i].xPos-1][players[i].yPos-1]) {
+                players[i].xPos -= 1;
+                players[i].yPos -= 1;
             }
         } else if (players[i].goingRight && players[i].xPos < xMax-1) {
             if (!ground[players[i].xPos+1][players[i].yPos]) {
                 players[i].xPos += 1;
+            } else if (!ground[players[i].xPos+1][players[i].yPos-1]) {
+                players[i].xPos += 1;
+                players[i].yPos -= 1;
+            }
+        }
+        
+        // Apply gravity to the tanks
+        if (players[i].yPos < yMax) {
+            if (!ground[players[i].xPos][players[i].yPos+1]) {
+                players[i].yPos += 1;
             }
         }
 
@@ -184,7 +214,7 @@ function run() {
 
     }
 
-    draw()
+    draw();
 }
 
 document.addEventListener("keydown", keyDownHandler, false);
@@ -240,4 +270,4 @@ function keyUpHandler(e) {
 
 dt = 1000/30;
 
-setInterval(run, dt);
+runId = setInterval(run, dt);

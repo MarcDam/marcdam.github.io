@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Monto Carlo Simulation of the Ising Model</title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link href='css/main.css' rel='stylesheet' type='text/css'>
+  </head>
+  <body>
+    <!-- menu -->
+    <div class="content">
+      <h1>Monto Carlo Simulation of the Ising Model</h1>
+      <div class="canvas">
+        <canvas id="mainCanvas" width="500" height="500"> </canvas>
+      </div>
+      <div class="controls">
+        <div id="buttons">
+          <input type="button" id="canvasResetButton" value="Reset">
+          <input type="button" id="stopButton" value="Pause simulation">
+          <input type="button" id="startButton" value="Start simulation">
+          <br> Number of cells:
+          <input type="range" min="10" max="200" step="10" id="cellSlider">
+          <label for="cellSlider" id="cellText"></label> (changing resets simulation)
+          <br> Zoom/scale canvas:
+          <input type="range" min="1" max="20" step="1" id="scaleSlider">
+          <br> Speed:
+          <input type="range" min="1" max="1001" step="10" id="speedSlider">
+          <br> Temperature:
+          <input type="range" min="1" max="20" step="1" id="temperatureSlider">
+          <label for="temperatureSlider" id="temperatureText"></label>
+        </div>
+      </div>
+      <script src="scripts/isingMonteCarlo.js"></script>
+    </div>
+  </body>
+</html>

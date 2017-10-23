@@ -138,7 +138,7 @@ document.getElementById("speedSlider").onchange = function() {
 
 // Temperature slider
 document.getElementById("temperatureSlider").onchange = function() {
-  T = parseInt(this.value);
+  T = parseFloat(this.value);
 }
 document.getElementById("temperatureSlider").oninput = function() {
   document.getElementById("temperatureText").innerHTML = this.value;

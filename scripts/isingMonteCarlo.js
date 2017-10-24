@@ -105,8 +105,10 @@ document.getElementById("stopButton").onclick = function() {
 
 // Start button
 document.getElementById("startButton").onclick = function() {
-  intervalId = setInterval(run, 1000/ups);
-  simulationRunning = true;
+  if (!simulationRunning) {
+    intervalId = setInterval(run, 1000/ups);
+    simulationRunning = true;
+  }
 }
 
 // Scale slider

@@ -84,22 +84,40 @@ drawField();
 document.getElementById("canvasResetButton").onclick = function() {
   // Generate and draw the new field
   field = resetCanvas();
+  energy = globalEnergy();
+  resetChart();
   drawField();
 }
 
-// "Game loop"
-ups = 50 // "updates" per second
-T = 1;
-document.getElementById("temperatureSlider").value = T;
-document.getElementById("temperatureText").innerHTML = T;
-
+// Function to calculate the energy contribution from a single cell
 function localEnergy(x, y) {
     return -field[x][y]*(field[mod(x-1, xMax)][y] + field[mod(x+1, xMax)][y] + field[x][mod(y-1, yMax)] + field[x][mod(y+1, yMax)]);
 }
 
+function globalEnergy() {
+    E = 0;
+    for (let i = 0; i < xMax; i++) {
+        for (let j = 0; j < yMax; j++) {
+            E += localEnergy(i, j);
+        }
+    }
+    return E/2;
+}
+
+var energy = globalEnergy();
+
+// "Game loop"
+ups = 50 // "updates" per second
+updates = 0; // "time" (used for graph of energy over time)
+T = 1;
+document.getElementById("temperatureSlider").value = T;
+document.getElementById("temperatureText").innerHTML = T;
+
 function run() { //
   // Repeat once for each step on the speed slider
   for (s = 0; s < speed; s++) {
+    updates++;
+    
     // Pick a random point
     x1 = getRandomInt(0, xMax - 1);
     y1 = getRandomInt(0, yMax - 1);
@@ -126,15 +144,57 @@ function run() { //
     if (deltaU <= 0) { // We keep the trial state if it has lower energy...
         drawPoint(x1, y1, cmap[field[x1][y1]]);
         drawPoint(x2, y2, cmap[field[x2][y2]]);
+        energy += deltaU;
     } else if (Math.random() < Math.exp(-deltaU/T)) { //... or if it is accepted by chance
         drawPoint(x1, y1, cmap[field[x1][y1]]);
         drawPoint(x2, y2, cmap[field[x2][y2]]);
+        energy += deltaU;
     } else { // We swap back if we do not accept the trial state
         field[x2][y2] = field[x1][y1];
         field[x1][y1] = old1;
     }
   }
+  
+  // Update the graph
+  var tmp = [updates];
+  tmp.push(energy);
+
+  data.push(tmp);
+  if (data.length > 500) {
+    data.shift();
+  }
+  energyChart.updateOptions({'file': data});
 }
+
+// Function to reset the chart
+function resetChart() {
+  updates = 0;
+  data = [];
+  var tmp = [0];
+  labels = ["Steps", "Energy"];
+  tmp.push(energy);
+  
+  data.push(tmp);
+  
+  // If a graph already exists, then destroy it
+  if (energyChart) {
+    energyChart.destroy();
+  }
+  
+  // Create the new graph
+  energyChart = new Dygraph(document.getElementById("energyChart"), data, {
+    drawPoints: true,
+    //valueRange: [0, 1], // Set y-axis
+    colors: cmap,
+    labels: labels});
+}
+
+// Setup the relevant chart variable and plot initial population on it
+var data;
+var energyChart;
+
+resetChart();
+
 // Start the simulation
 intervalId = setInterval(run, 1000/ups);
 simulationRunning = true;
@@ -147,8 +207,10 @@ document.getElementById("stopButton").onclick = function() {
 
 // Start button
 document.getElementById("startButton").onclick = function() {
-  intervalId = setInterval(run, 1000/ups);
-  simulationRunning = true;
+  if (!simulationRunning) {
+    intervalId = setInterval(run, 1000/ups);
+    simulationRunning = true;
+  }
 }
 
 // Scale slider
@@ -204,6 +266,8 @@ document.getElementById("cellSlider").onchange = function() {
   
   // Generate and draw the new field
   field = resetCanvas();
+  energy = globalEnergy();
+  resetChart();
   drawField();
   
   // If the simulation was running before we started redrawing we start it again
@@ -227,6 +291,8 @@ document.getElementById("particleSlider").onchange = function() {
   
   // Generate and draw the new field
   field = resetCanvas();
+  energy = globalEnergy();
+  resetChart();
   drawField();
   
   // If the simulation was running before we started redrawing we start it again

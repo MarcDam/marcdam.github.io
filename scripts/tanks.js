@@ -113,14 +113,29 @@ function draw() {
             ctx.fillText("Player " + (i+1) + " won", canvas.width/2, canvas.height/2);
         }
     }
+    
+    // Draw any explosions
+    for (let i = 0; i < explosions.length; i++) {
+        ctx.beginPath();
+        ctx.arc((explosions[i].x+0.5)*scale, (explosions[i].y+0.5)*scale, explosions[i].r*scale, 0, 2 * Math.PI, false);
+        ctx.closePath();
+        ctx.fillStyle = "yellow";
+        ctx.fill();
+        explosions[i].r += 0.9;
+        if (explosions[i].r > explosionRadius+1) {
+            explosions.splice(i, 1);
+        }
+    }
 }
 
-gravity = 0.002;
-bulletSpeed = 2;
-explosionRadius = 2;
+var gravity = 0.002;
+var bulletSpeed = 0.3;
+var explosionRadius = 3;
+var explosions = [];
 
 function explosion(x, y) {
     console.log("Bullet hit at x:" + x + " y:" + y);
+    explosions[explosions.length] = {"x": x, "y": y, "r": 0.1};
     for (let i = -explosionRadius; i <= explosionRadius; i++) {
         for (let j = -explosionRadius; j <= explosionRadius; j++) {
             if (i*i + j*j <= explosionRadius*explosionRadius) {
@@ -132,8 +147,9 @@ function explosion(x, y) {
     for (let i = 0; i < players.length; i++) {
         if ((x - players[i].xPos)*(x - players[i].xPos) + (y - players[i].yPos)*(y - players[i].yPos) <= explosionRadius*explosionRadius) {
             clearInterval(runId);
-            console.log("Player " + i + " hit");
+            console.log("Player " + (i+1) + " hit");
             players[(i + 1) % 2].won = true;
+            draw();
         }
     }
 }
@@ -186,8 +202,8 @@ function run() {
         // If a bullet is in the air we update its position and do collision detection
         if (players[i].bullet) {
             // Move bullet
-            players[i].bulletX += players[i].bulletSpeedX;
-            players[i].bulletY += players[i].bulletSpeedY;
+            players[i].bulletX += players[i].bulletSpeedX*dt;
+            players[i].bulletY += players[i].bulletSpeedY*dt;
             players[i].bulletSpeedY += gravity*dt;
             // Remove the bullet if it goes off screen
             if (players[i].bulletX < 0 || players[i].bulletX > xMax || players[i].bulletY < 0 || players[i].bulletY > yMax) {
@@ -268,6 +284,6 @@ function keyUpHandler(e) {
     }
 }
 
-dt = 1000/30;
+dt = 1000/60;
 
 runId = setInterval(run, dt);

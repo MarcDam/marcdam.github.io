@@ -6,6 +6,11 @@
   border: 1px solid black;
 }
 
+.content-block {
+  padding: 16px;
+  border-radius: 0.25rem;
+}
+
 .controls {
   float: left;
 }
@@ -20,9 +25,14 @@
   height: 500px;
 }
 
+.content {
+  width: 60em;
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
 .explanation {
   clear: left;
-  width: 60em;
 }
 
 a {
@@ -33,10 +43,18 @@ a:hover {
   text-decoration: underline;
 }
 
+body {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+input, select {
+  border-radius: 0.25rem;
+}
+
 nav {
   width: 100%;
-  background-color: #fff;
-  border: 1px solid #ccc;
+  border: 1px solid;
   border-right: none;
   border-left: none;
 }
@@ -51,21 +69,99 @@ nav ul li {
   list-style: none;
   float: left;
   text-align: center;
-  border-right: 1px solid #ccc;
-}
-
-nav ul li:first-child {
-  border-left: none;
+  border-right: 1px solid;
 }
 
 nav ul li a {
   display: block;
   text-decoration: none;
-  color: #444;
   padding: 0.8em 1em;
 }
 
 nav ul li a:hover {
-  background-color: #333;
-  color: #fff;
+  text-decoration: none;
+}
+
+@media (prefers-color-scheme: light) {
+  body {
+    color: #1b1b1b;
+  }
+  
+  a {
+    color: #0069c2;
+  }
+  
+  nav {
+    background-color: #f9f9fb;
+    border-color: #cdcdcd;
+    font-family: sans-serif;
+  }
+  
+  nav ul li {
+    border-right-color: #cdcdcd;
+  }
+  
+  nav ul li a {
+    color: #4e4e4e;
+  }
+  
+  nav ul li a:hover {
+    background-color: #cdcdcd;
+  }
+  
+  .content-block {
+    background-color: #f2f1f1;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    color: #fff;
+    background-color: #1b1b1b;
+  }
+  
+  a {
+    color: #8cb4ff;
+  }
+  
+  nav {
+    background-color: #343434;
+    border-color: #858585;
+    font-family: sans-serif;
+  }
+  
+  nav ul li {
+    border-right-color: #858585;
+  }
+  
+  nav ul li a {
+    color: #cdcdcd;
+  }
+  
+  nav ul li a:hover {
+    background-color: #696969;
+  }
+  
+  input, select {
+    background-color: #343434;
+    color: #cdcdcd;
+    border: 1px solid #696969;
+  }
+  
+  div.content-block input, div.content-block select {
+    background-color: #1b1b1b;
+    color: #fff;
+  }
+  
+  input:hover, select:hover, div.content-block input:hover, div.content-block select:hover {
+    background-color: #696969;
+  }
+  
+  #mainCanvas {
+    background-color: #cdcdcd;
+  }
+  
+  .content-block {
+    background-color: #343434;
+  }
 }
